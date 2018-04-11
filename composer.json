@@ -1,0 +1,40 @@
+{
+  "name": "jorijn/ynab-bunq-connector-bundle",
+  "description": "A Symfony 3.4 LTS compatible Bundle for uploading payments from the bunq Bundle to YNAB",
+  "type": "library",
+  "require": {
+    "symfony/symfony": "3.4.*",
+    "bunq/sdk_php": "0.12.*",
+    "php": "^7.0.13",
+    "jorijn/ynab-sdk-php": "^1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=7.1 <8.0.0",
+    "friendsofphp/php-cs-fixer": "^2.11"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jorijn\\YNAB\\BunqConnectorBundle\\": ""
+    },
+    "exclude-from-classmap": [
+      "/Tests/"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\Jorijn\\YNAB\\BunqConnectorBundle\\": "Tests/"
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "bin/phpunit --coverage-text;"
+  },
+  "authors": [
+    {
+      "name": "Jorijn Schrijvershof",
+      "email": "jorijn@jorijn.com"
+    }
+  ]
+}
