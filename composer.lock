@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8de51d71ac18eda150c6d717f1af841a",
+    "content-hash": "d0be068bffbb533f0e12398af810b493",
     "packages": [
         {
             "name": "bunq/sdk_php",
-            "version": "0.12.4",
+            "version": "0.13.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bunq/sdk_php.git",
-                "reference": "2bf1329a65c386b645597e13e1ee951cfff02ada"
+                "reference": "652e650aa35a8c0c598653e986ac7f68d4808bdd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bunq/sdk_php/zipball/2bf1329a65c386b645597e13e1ee951cfff02ada",
-                "reference": "2bf1329a65c386b645597e13e1ee951cfff02ada",
+                "url": "https://api.github.com/repos/bunq/sdk_php/zipball/652e650aa35a8c0c598653e986ac7f68d4808bdd",
+                "reference": "652e650aa35a8c0c598653e986ac7f68d4808bdd",
                 "shasum": ""
             },
             "require": {
@@ -67,7 +67,7 @@
                 "payment",
                 "sepa"
             ],
-            "time": "2017-12-21T16:33:00+00:00"
+            "time": "2018-03-21T09:07:39+00:00"
         },
         {
             "name": "doctrine/annotations",
