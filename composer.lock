@@ -4,71 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0be068bffbb533f0e12398af810b493",
+    "content-hash": "a469304eb5a90a1cd611f7aad8dc6674",
     "packages": [
-        {
-            "name": "bunq/sdk_php",
-            "version": "0.13.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bunq/sdk_php.git",
-                "reference": "652e650aa35a8c0c598653e986ac7f68d4808bdd"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bunq/sdk_php/zipball/652e650aa35a8c0c598653e986ac7f68d4808bdd",
-                "reference": "652e650aa35a8c0c598653e986ac7f68d4808bdd",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "guzzlehttp/guzzle": "~6",
-                "php": "^7.0.13"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.4",
-                "jakub-onderka/php-parallel-lint": "^0.9.2",
-                "phpro/grumphp": "^0.11.6",
-                "phpstan/phpstan": "^0.8",
-                "phpunit/phpunit": "^5.7",
-                "sebastian/phpcpd": "^3.0",
-                "sensiolabs/security-checker": "^4.1"
-            },
-            "bin": [
-                "bin/bunq-install"
-            ],
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "bunq\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "bunq",
-                    "email": "sdk@bunq.com",
-                    "homepage": "https://www.bunq.com",
-                    "role": "Owner"
-                }
-            ],
-            "description": "bunq PHP SDK",
-            "homepage": "https://bunq.com/",
-            "keywords": [
-                "api",
-                "bunq",
-                "finance",
-                "open-banking",
-                "payment",
-                "sepa"
-            ],
-            "time": "2018-03-21T09:07:39+00:00"
-        },
         {
             "name": "doctrine/annotations",
             "version": "v1.6.0",

@@ -20,9 +20,18 @@ class Configuration implements ConfigurationInterface
         $treeBuilder = new TreeBuilder();
         $rootNode = $treeBuilder->root('jorijn_ynab_bunq_connector');
 
-        // Here you should define the parameters that are allowed to
-        // configure your bundle. See the documentation linked above for
-        // more information on that topic.
+        $rootNode->children()
+            ->arrayNode('connections')
+                ->arrayPrototype()
+                    ->children()
+                        ->scalarNode('bunq_account_id')->end()
+                        ->scalarNode('ynab_budget_id')->end()
+                        ->scalarNode('ynab_account_id')->end()
+                    ->end()
+                ->end()
+            ->end()
+            ->scalarNode('api_key')->end()
+        ->end();
 
         return $treeBuilder;
     }

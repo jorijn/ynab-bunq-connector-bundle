@@ -4,9 +4,9 @@
   "type": "library",
   "require": {
     "symfony/symfony": "3.4.*",
-    "bunq/sdk_php": "0.13.*",
     "php": "^7.0.13",
-    "jorijn/ynab-sdk-php": ">=1.0 <2.0.0"
+    "jorijn/ynab-sdk-php": ">=1.0 <2.0.0",
+    "guzzlehttp/guzzle": "~6"
   },
   "require-dev": {
     "phpunit/phpunit": ">=7.1 <8.0.0",

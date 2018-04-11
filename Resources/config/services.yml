@@ -1,4 +1,63 @@
 services:
-#    jorijn_ynab_bunq_connector.example:
-#        class: Jorijn\YNAB\BunqConnectorBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    jorijn_ynab_bunq_connector.factory:
+      class: Jorijn\YNAB\BunqConnectorBundle\Factory\ApiFactory
+
+    jorijn_ynab_bunq_connector.configuration:
+      factory: 'jorijn_ynab_bunq_connector.factory:createConfiguration'
+      class: YNAB\Configuration
+      arguments:
+        - ''
+
+    jorijn_ynab_bunq_connector.commands.list_budgets:
+      class: Jorijn\YNAB\BunqConnectorBundle\Command\ListBudgetsCommand
+      arguments:
+        - 'ynab-connector:list-budgets'
+        - '@jorijn_ynab_bunq_connector.api.accounts'
+        - '@jorijn_ynab_bunq_connector.api.budgets'
+      tags:
+        - { name: 'console.command' }
+
+    jorijn_ynab_bunq_connector.guzzle.client:
+      class: GuzzleHttp\Client
+
+    jorijn_ynab_bunq_connector.api.parent:
+      abstract: true,
+      arguments:
+        - '@jorijn_ynab_bunq_connector.guzzle.client'
+        - '@jorijn_ynab_bunq_connector.configuration'
+
+    jorijn_ynab_bunq_connector.api.accounts:
+      parent: 'jorijn_ynab_bunq_connector.api.parent'
+      class: YNAB\Client\AccountsApi
+
+    jorijn_ynab_bunq_connector.api.budgets:
+      parent: 'jorijn_ynab_bunq_connector.api.parent'
+      class: YNAB\Client\BudgetsApi
+
+    jorijn_ynab_bunq_connector.api.categories:
+      parent: 'jorijn_ynab_bunq_connector.api.parent'
+      class: YNAB\Client\CategoriesApi
+
+    jorijn_ynab_bunq_connector.api.months:
+      parent: 'jorijn_ynab_bunq_connector.api.parent'
+      class: YNAB\Client\MonthsApi
+
+    jorijn_ynab_bunq_connector.api.payee_locations:
+      parent: 'jorijn_ynab_bunq_connector.api.parent'
+      class: YNAB\Client\PayeeLocationsApi
+
+    jorijn_ynab_bunq_connector.api.payees:
+      parent: 'jorijn_ynab_bunq_connector.api.parent'
+      class: YNAB\Client\PayeesApi
+
+    jorijn_ynab_bunq_connector.api.scheduled_transactions:
+      parent: 'jorijn_ynab_bunq_connector.api.parent'
+      class: YNAB\Client\ScheduledTransactionsApi
+
+    jorijn_ynab_bunq_connector.api.transactions:
+      parent: 'jorijn_ynab_bunq_connector.api.parent'
+      class: YNAB\Client\TransactionsApi
+
+    jorijn_ynab_bunq_connector.api.user:
+      parent: 'jorijn_ynab_bunq_connector.api.parent'
+      class: YNAB\Client\UserApi
