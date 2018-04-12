@@ -3,6 +3,7 @@
 namespace Jorijn\YNAB\BunqConnectorBundle\Command;
 
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use YNAB\Client\AccountsApi;
@@ -46,6 +47,32 @@ class ListBudgetsCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        dump($this->budgetsApi->getBudgets());
+        $table = new Table($output);
+        $table->setHeaders(['Budget ID', 'Budget Name', 'Account ID', 'Account Name', 'Account Balance']);
+
+        // fetch the budgets from ynab
+        $budgets = $this->budgetsApi->getBudgets()->getData()->getBudgets();
+        foreach ($budgets as $budget) {
+            $accounts = $this->accountsApi
+                ->getAccounts($budget->getId())
+                ->getData()
+                ->getAccounts();
+
+            foreach ($accounts as $account) {
+                if (true === $account->getClosed()) {
+                    continue;
+                }
+
+                $table->addRow([
+                    $budget->getId(),
+                    $budget->getName(),
+                    $account->getId(),
+                    $account->getName(),
+                    round($account->getBalance() / 1000, 2),
+                ]);
+            }
+        }
+
+        $table->render();
     }
 }

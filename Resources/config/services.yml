@@ -17,6 +17,20 @@ services:
       tags:
         - { name: 'console.command' }
 
+    jorijn_ynab_bunq_connector.commands.verify_configuration:
+      class: Jorijn\YNAB\BunqConnectorBundle\Command\VerifyConfigurationCommand
+      arguments:
+        - 'ynab-connector:verify-configuration'
+        - '@jorijn_ynab_bunq_connector.api.accounts'
+        - '@jorijn_ynab_bunq_connector.api.budgets'
+        - '@symfony_bunq.model.current_user'
+        - '@router'
+        - '%ynab_bunq_connector.connections%'
+      calls:
+        - { method: 'setApiContext', arguments: ['@symfony_bunq.api.api_context'] }
+      tags:
+        - { name: 'console.command' }
+
     jorijn_ynab_bunq_connector.guzzle.client:
       class: GuzzleHttp\Client
 
@@ -61,3 +75,12 @@ services:
     jorijn_ynab_bunq_connector.api.user:
       parent: 'jorijn_ynab_bunq_connector.api.parent'
       class: YNAB\Client\UserApi
+
+    jorijn_ynab_bunq_connector.event_listener.mutation:
+      class: Jorijn\YNAB\BunqConnectorBundle\EventListener\MutationEventListener
+      arguments:
+        - '@jorijn_ynab_bunq_connector.api.transactions'
+        - '@logger'
+        - '%ynab_bunq_connector.connections%'
+      tags:
+        - { name: kernel.event_listener, event: symfony_bunq.event.mutation, method: 'onMutation' }
