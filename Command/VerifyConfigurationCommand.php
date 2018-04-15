@@ -3,8 +3,8 @@
 namespace Jorijn\YNAB\BunqConnectorBundle\Command;
 
 use bunq\Model\Generated\Endpoint\MonetaryAccountBank;
+use Jorijn\SymfonyBunqBundle\Component\Command\ApiHelper;
 use Jorijn\SymfonyBunqBundle\Component\Traits\ApiContextAwareTrait;
-use Jorijn\SymfonyBunqBundle\Model\User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,27 +30,28 @@ class VerifyConfigurationCommand extends Command
     protected $accountsApi;
     /** @var BudgetsApi */
     protected $budgetsApi;
-    /** @var User */
-    protected $user;
     /** @var array */
     protected $connections;
     /** @var RouterInterface */
-    private $router;
+    protected $router;
+    /** @var ApiHelper */
+    protected $apiHelper;
 
     /**
      * ListBudgetsCommand constructor.
      *
-     * @param string      $name
-     * @param AccountsApi $accountsApi
-     * @param BudgetsApi  $budgetsApi
-     * @param User        $user
-     * @param array       $connections
+     * @param string          $name
+     * @param AccountsApi     $accountsApi
+     * @param BudgetsApi      $budgetsApi
+     * @param ApiHelper       $apiHelper
+     * @param RouterInterface $router
+     * @param array           $connections
      */
     public function __construct(
         string $name,
         AccountsApi $accountsApi,
         BudgetsApi $budgetsApi,
-        User $user,
+        ApiHelper $apiHelper,
         RouterInterface $router,
         array $connections
     ) {
@@ -58,9 +59,9 @@ class VerifyConfigurationCommand extends Command
 
         $this->accountsApi = $accountsApi;
         $this->budgetsApi = $budgetsApi;
-        $this->user = $user;
         $this->connections = $connections;
         $this->router = $router;
+        $this->apiHelper = $apiHelper;
     }
 
     /**
@@ -79,11 +80,15 @@ class VerifyConfigurationCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        if (!$this->apiHelper->restore($this->getHelper('question'), $input, $output)) {
+            return;
+        }
+
         $output->writeln(PHP_EOL.'<info>BUNQ CONFIGURATION</info>'.PHP_EOL);
 
         $table = new Table($output);
         $table->setHeaders(['Configuration', 'Status']);
-        $table->addRow(['Person', $this->user->getBunqUser()->getLegalName()]);
+        $table->addRow(['Person', $this->apiHelper->currentUser()->getBunqUser()->getLegalName()]);
         $table->addRow(['Environment', $this->apiContext->getEnvironmentType()->getChoiceString()]);
         $table->addRow(['Callback URL', $this->getUrl()]);
         $table->addRow(['Callback Status', $this->getCallbackStatus() ? self::OK : self::NOT_OK]);
@@ -117,21 +122,13 @@ class VerifyConfigurationCommand extends Command
         $table->render();
     }
 
-    /**
-     * @param MonetaryAccountBank $bankAccount
-     *
-     * @return string
-     */
-    protected function getIbanForBankAccount(MonetaryAccountBank $bankAccount): string
+    protected function getUrl(): string
     {
-        /** @var Pointer $alias */
-        foreach ($bankAccount->getAlias() as $alias) {
-            if (self::IBAN === $alias->getType()) {
-                return $alias->getValue();
-            }
-        }
-
-        return self::UNKNOWN;
+        return $this->router->generate(
+            self::SYMFONY_BUNQ_CALLBACK_URL,
+            [],
+            UrlGeneratorInterface::ABSOLUTE_URL
+        );
     }
 
     protected function getCallbackStatus()
@@ -152,12 +149,20 @@ class VerifyConfigurationCommand extends Command
         return false;
     }
 
-    protected function getUrl(): string
+    /**
+     * @param MonetaryAccountBank $bankAccount
+     *
+     * @return string
+     */
+    protected function getIbanForBankAccount(MonetaryAccountBank $bankAccount): string
     {
-        return $this->router->generate(
-            self::SYMFONY_BUNQ_CALLBACK_URL,
-            [],
-            UrlGeneratorInterface::ABSOLUTE_URL
-        );
+        /** @var Pointer $alias */
+        foreach ($bankAccount->getAlias() as $alias) {
+            if (self::IBAN === $alias->getType()) {
+                return $alias->getValue();
+            }
+        }
+
+        return self::UNKNOWN;
     }
 }

@@ -22,16 +22,16 @@ class Configuration implements ConfigurationInterface
 
         $rootNode->children()
             ->arrayNode('connections')
-                ->arrayPrototype()
-                    ->children()
-                        ->scalarNode('bunq_account_id')->end()
-                        ->scalarNode('ynab_budget_id')->end()
-                        ->scalarNode('ynab_account_id')->end()
-                    ->end()
-                ->end()
+            ->arrayPrototype()
+            ->children()
+            ->scalarNode('bunq_account_id')->end()
+            ->scalarNode('ynab_budget_id')->end()
+            ->scalarNode('ynab_account_id')->end()
+            ->end()
+            ->end()
             ->end()
             ->scalarNode('api_key')->end()
-        ->end();
+            ->end();
 
         return $treeBuilder;
     }

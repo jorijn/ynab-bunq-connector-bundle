@@ -23,11 +23,9 @@ services:
         - 'ynab-connector:verify-configuration'
         - '@jorijn_ynab_bunq_connector.api.accounts'
         - '@jorijn_ynab_bunq_connector.api.budgets'
-        - '@symfony_bunq.model.current_user'
+        - '@symfony_bunq.component.command.api_helper'
         - '@router'
         - '%ynab_bunq_connector.connections%'
-      calls:
-        - { method: 'setApiContext', arguments: ['@symfony_bunq.api.api_context'] }
       tags:
         - { name: 'console.command' }
 
