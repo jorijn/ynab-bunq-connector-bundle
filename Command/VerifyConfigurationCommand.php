@@ -2,7 +2,10 @@
 
 namespace Jorijn\YNAB\BunqConnectorBundle\Command;
 
+use bunq\Model\Generated\Endpoint\MonetaryAccount;
 use bunq\Model\Generated\Endpoint\MonetaryAccountBank;
+use bunq\Model\Generated\Endpoint\MonetaryAccountJoint;
+use bunq\Model\Generated\Endpoint\MonetaryAccountLight;
 use bunq\Model\Generated\Object\NotificationFilter;
 use bunq\Model\Generated\Object\Pointer;
 use Jorijn\SymfonyBunqBundle\Component\Command\ApiHelper;
@@ -105,7 +108,8 @@ class VerifyConfigurationCommand extends Command
         $table->setHeaders(['bunq Account', 'bunq IBAN', 'YNAB Budget', 'YNAB Account']);
 
         foreach ($this->connections as $connection) {
-            $bunqAccount = MonetaryAccountBank::get($connection['bunq_account_id'])->getValue();
+            /** @var MonetaryAccountBank|MonetaryAccountJoint|MonetaryAccountLight $account */
+            $bunqAccount = MonetaryAccount::get($connection['bunq_account_id'])->getValue()->getReferencedObject();
 
             $ynabBudget = $this->budgetsApi->getBudgetById(
                 $connection['ynab_budget_id']
