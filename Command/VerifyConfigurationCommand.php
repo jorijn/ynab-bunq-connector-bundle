@@ -159,11 +159,11 @@ class VerifyConfigurationCommand extends Command
     }
 
     /**
-     * @param MonetaryAccountBank $bankAccount
+     * @param MonetaryAccountBank|MonetaryAccountJoint|MonetaryAccountLight $bankAccount
      *
      * @return string
      */
-    protected function getIbanForBankAccount(MonetaryAccountBank $bankAccount): string
+    protected function getIbanForBankAccount($bankAccount): string
     {
         /** @var Pointer $alias */
         foreach ($bankAccount->getAlias() as $alias) {
