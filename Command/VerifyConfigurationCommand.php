@@ -3,8 +3,11 @@
 namespace Jorijn\YNAB\BunqConnectorBundle\Command;
 
 use bunq\Model\Generated\Endpoint\MonetaryAccountBank;
+use bunq\Model\Generated\Object\NotificationFilter;
+use bunq\Model\Generated\Object\Pointer;
 use Jorijn\SymfonyBunqBundle\Component\Command\ApiHelper;
 use Jorijn\SymfonyBunqBundle\Component\Traits\ApiContextAwareTrait;
+use Jorijn\SymfonyBunqBundle\Model\User;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputInterface;
@@ -80,18 +83,20 @@ class VerifyConfigurationCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        if (!$this->apiHelper->restore($this->getHelper('question'), $input, $output)) {
+        if (!$api = $this->apiHelper->restore($this->getHelper('question'), $input, $output)) {
             return;
         }
+
+        $user = $this->apiHelper->currentUser();
 
         $output->writeln(PHP_EOL.'<info>BUNQ CONFIGURATION</info>'.PHP_EOL);
 
         $table = new Table($output);
         $table->setHeaders(['Configuration', 'Status']);
-        $table->addRow(['Person', $this->apiHelper->currentUser()->getBunqUser()->getLegalName()]);
-        $table->addRow(['Environment', $this->apiContext->getEnvironmentType()->getChoiceString()]);
+        $table->addRow(['Person', $user->getBunqUser()->getLegalName()]);
+        $table->addRow(['Environment', $api->getEnvironmentType()->getChoiceString()]);
         $table->addRow(['Callback URL', $this->getUrl()]);
-        $table->addRow(['Callback Status', $this->getCallbackStatus() ? self::OK : self::NOT_OK]);
+        $table->addRow(['Callback Status', $this->getCallbackStatus($user) ? self::OK : self::NOT_OK]);
         $table->render();
 
         $output->writeln(PHP_EOL.'<info>YNAB CONFIGURATION</info>'.PHP_EOL);
@@ -131,9 +136,9 @@ class VerifyConfigurationCommand extends Command
         );
     }
 
-    protected function getCallbackStatus()
+    protected function getCallbackStatus(User $user): bool
     {
-        $allCurrentNotificationFilter = $this->user->getBunqUser()->getNotificationFilters();
+        $allCurrentNotificationFilter = $user->getBunqUser()->getNotificationFilters();
 
         /** @var NotificationFilter $filter */
         foreach ($allCurrentNotificationFilter as $filter) {
