@@ -7,11 +7,11 @@ use YNAB\Configuration;
 class ApiFactory
 {
     /**
-     * @param string $apiKey
+     * @param string|null $apiKey
      *
      * @return Configuration
      */
-    public function createConfiguration(string $apiKey): Configuration
+    public function createConfiguration($apiKey = null): Configuration
     {
         $configuration = new Configuration();
         $configuration->setApiKey('Authorization', $apiKey)
