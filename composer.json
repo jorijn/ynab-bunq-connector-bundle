@@ -4,9 +4,9 @@
   "type": "library",
   "require": {
     "symfony/symfony": "3.4.*",
-    "php": "^7.0.13",
+    "php": "^7.1",
     "jorijn/ynab-sdk-php": ">=1.0 <2.0.0",
-    "jorijn/symfony-bunq-bundle": "0.1.*",
+    "jorijn/symfony-bunq-bundle": "1.0.x",
     "guzzlehttp/guzzle": "~6"
   },
   "require-dev": {
