@@ -1,5 +1,5 @@
 {
-  "name": "jorijn/ynab-bunq-connector-bundle",
+  "name": "paulovitorbal/ynab-bunq-connector-bundle",
   "description": "A Symfony 3.4 LTS compatible Bundle for uploading payments from the bunq Bundle to YNAB",
   "type": "library",
   "require": {
