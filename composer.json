@@ -3,7 +3,7 @@
   "description": "A Symfony 3.4 LTS compatible Bundle for uploading payments from the bunq Bundle to YNAB",
   "type": "library",
   "require": {
-    "symfony/symfony": "3.4.*",
+    "symfony/framework-bundle": "3.4.*",
     "php": "^7.1",
     "jorijn/ynab-sdk-php": ">=1.0 <2.0.0",
     "jorijn/symfony-bunq-bundle": "1.0.x",
