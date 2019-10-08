@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4bb7caf173249d25df0b8013402542e5",
+    "content-hash": "e2b9990c4920a091f3250dead5b259ea",
     "packages": [
         {
             "name": "bunq/sdk_php",
